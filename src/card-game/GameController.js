@@ -11,6 +11,7 @@ export class GameController {
     this.deck = null;
     this.cardLayer = new Container();
     this.app.stage.addChild(this.cardLayer);
+    this.currentPlayerIndex = 0; // Player 0 is the human player
   }
 
   init() {
@@ -52,16 +53,49 @@ export class GameController {
       });
     }
 
+    // Display all cards at once
     this.renderHands();
   }
 
   renderHands() {
-    this.players.forEach(player => {
+    this.players.forEach((player, playerIndex) => {
       player.hand.forEach((card, index) => {
+        // Only show face-up cards for current player (player 0)
+        const isCurrentPlayer = playerIndex === this.currentPlayerIndex;
+        
         const sprite = new CardSprite(card);
         sprite.x = player.x + index * 25;
         sprite.y = player.y;
+        
+        // If not current player, keep card face down
+        if (!isCurrentPlayer) {
+          sprite.isFlipped = true;
+          sprite.drawCard();
+        }
+        
+        // Add animation for all cards appearing
+        sprite.scale.set(0);
+        sprite.alpha = 0;
+        
         this.cardLayer.addChild(sprite);
+
+        // Animate card appearing (all at same time)
+        let startTime = Date.now();
+        const duration = 400;
+
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+
+          sprite.scale.set(progress);
+          sprite.alpha = progress;
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          }
+        };
+
+        animate();
       });
     });
   }
