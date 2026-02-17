@@ -1,17 +1,45 @@
-// import { connectToServer } from "./socket/socketActions"
-import { registerSocketEvents } from "./socket/socketHandlers"
-import Game from "./Game"
+import { Application } from "pixi.js"
+import { GameController } from "./card-game/GameController"
+import { connectToServer } from "./socket/socketActions"
+import {
+  registerSocketEvents,
+  unregisterSocketEvents,
+} from "./socket/socketHandlers"
+
+class Game {
+  constructor() {
+    this.app = null
+    this.controller = null
+  }
+
+  async start() {
+    this.app = new Application()
+    await this.app.init({
+      resizeTo: window,
+      backgroundColor: 0x0b6623,
+    })
+
+    document.body.appendChild(this.app.canvas)
+
+    this.controller = new GameController(this.app)
+    this.controller.init()
+  }
+}
+
+const bootstrap = async () => {
+  registerSocketEvents()
+  connectToServer()
+
+  const game = new Game()
+  await game.start()
+}
 
 window.addEventListener("DOMContentLoaded", () => {
-
-  // 1️⃣ Register socket listeners
-  registerSocketEvents()
-
-  // 2️⃣ Connect to server
-  // connectToServer()
-
-  // 3️⃣ Start Pixi / Game engine
-  const game = new Game()
-  game.start()
-
+  void bootstrap()
 })
+
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => {
+    unregisterSocketEvents()
+  })
+}
