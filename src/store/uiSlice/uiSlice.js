@@ -12,17 +12,21 @@ const uiSlice = createSlice({
   initialState,
   reducers: {
     setLoading: (state, action) => {
+      // Toggles global loading state.
       state.loading = action.payload
     },
 
     setError: (state, action) => {
+      // Stores latest user-visible error text.
       state.error = action.payload
     },
 
     toggleScoreBoard: (state) => {
+      // Opens/closes scoreboard overlay.
       state.showScoreBoard = !state.showScoreBoard
     },
 
+    // Restores UI flags to defaults.
     resetUI: () => initialState,
   },
 })

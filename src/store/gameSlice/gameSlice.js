@@ -21,29 +21,36 @@ const gameSlice = createSlice({
     },
 
     setPlayers: (state, action) => {
+      // Updates player list only.
       state.players = action.payload
     },
 
     setCurrentTurn: (state, action) => {
+      // Sets active turn owner.
       state.currentTurn = action.payload
     },
 
     setCurrentTrick: (state, action) => {
+      // Stores cards currently in trick.
       state.currentTrick = action.payload
     },
 
     setHeartsBroken: (state, action) => {
+      // Tracks hearts-break rule state.
       state.heartsBroken = action.payload
     },
 
     setScores: (state, action) => {
+      // Replaces score board map.
       state.scores = action.payload
     },
 
     setPhase: (state, action) => {
+      // Updates phase machine state.
       state.phase = action.payload
     },
 
+    // Restores game slice to initial empty state.
     resetGame: () => initialState,
   },
 })

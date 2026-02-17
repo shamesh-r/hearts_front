@@ -8,11 +8,17 @@ import {
 } from "./socket/socketHandlers"
 
 class Game {
+  /**
+   * Minimal runtime wrapper that owns Pixi app + controller lifecycle.
+   */
   constructor() {
     this.app = null
     this.controller = null
   }
 
+  /**
+   * Creates Pixi app, mounts canvas, and initializes the game controller.
+   */
   async start() {
     // Pixi v8 initialization is async.
     this.app = new Application()

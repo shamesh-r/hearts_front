@@ -1,12 +1,23 @@
 // Pixi display object for a playing card (front and back rendering).
-import { Container, Graphics, Text } from "pixi.js";
+import { Container, Graphics, Text, Sprite } from "pixi.js";
 import { SUITS, SUIT_COLORS, RANK_NAMES, CARD_WIDTH, CARD_HEIGHT, CARD_CORNER_RADIUS } from "./CardAssets";
+import backCardImage from "../../assets/backCard.jpg";
 
 export class CardSprite extends Container {
+  /**
+   * @param {{rank: string, suit: string}} card normalized card data
+   */
   constructor(card) {
     super();
     this.card = card;
     this.isFlipped = false;
+
+    // Preloaded textured backside sprite from assets folder.
+    this.backSprite = Sprite.from(backCardImage);
+    this.backSprite.width = CARD_WIDTH;
+    this.backSprite.height = CARD_HEIGHT;
+    this.backSprite.visible = false;
+    this.addChild(this.backSprite);
     
     // Create the card background
     this.bg = new Graphics();
@@ -19,40 +30,33 @@ export class CardSprite extends Container {
     this.drawCard();
   }
 
+  /**
+   * Rebuilds card visuals based on current flip state.
+   */
   drawCard() {
     // Redraw from scratch whenever card state (face-up/face-down) changes.
     this.bg.clear();
     this.contentContainer.removeChildren();
     
     if (this.isFlipped) {
+      this.backSprite.visible = true;
       this.drawCardBack();
     } else {
+      this.backSprite.visible = false;
       this.drawCardFront();
     }
   }
 
+  /**
+   * Draws decorative face-down card design.
+   */
   drawCardBack() {
-    // Card back design
-    this.bg.beginFill(0x1a4d2e);
-    this.bg.drawRoundedRect(0, 0, CARD_WIDTH, CARD_HEIGHT, CARD_CORNER_RADIUS);
-    this.bg.endFill();
-    
-    // Border
-    this.bg.lineStyle(2, 0xffd700, 1);
-    this.bg.drawRoundedRect(0, 0, CARD_WIDTH, CARD_HEIGHT, CARD_CORNER_RADIUS);
-    
-    // Back pattern
-    const patternGraphics = new Graphics();
-    patternGraphics.beginFill(0xffd700);
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 6; j++) {
-        patternGraphics.drawRect(5 + i * 18, 5 + j * 18, 12, 12);
-      }
-    }
-    patternGraphics.endFill();
-    this.contentContainer.addChild(patternGraphics);
+    // Backside is provided by texture image; no vector draw needed.
   }
 
+  /**
+   * Draws rank/suit card face using configured theme constants.
+   */
   drawCardFront() {
     const suitSymbol = this.card.suit;
     const suitColor = SUIT_COLORS[suitSymbol];
@@ -122,12 +126,18 @@ export class CardSprite extends Container {
     this.contentContainer.addChild(bottomSuitText);
   }
 
+  /**
+   * Toggles front/back state and redraws.
+   */
   flip() {
     // Toggle card face visibility.
     this.isFlipped = !this.isFlipped;
     this.drawCard();
   }
 
+  /**
+   * Ensures card is face-up.
+   */
   reveal() {
     // Convenience helper for one-way reveal.
     if (this.isFlipped) {

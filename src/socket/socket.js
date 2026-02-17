@@ -5,11 +5,11 @@ import { io } from "socket.io-client";
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:5000";
 
 export const socket = io(SOCKET_URL, {
+  // Start disconnected so listeners can be attached first.
   autoConnect: false,
+  // Prefer websocket, but allow polling fallback.
   transports: ["websocket", "polling"],
 });
-
-console.log(socket)
 
 export const connectSocket = () => {
   // Idempotent connect helper.

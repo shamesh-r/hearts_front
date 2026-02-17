@@ -40,13 +40,18 @@ import { Application } from "pixi.js"
 import { GameController } from "./card-game/GameController"
 
 export default class Game {
-
+  /**
+   * Legacy-compatible game entry that wires Pixi and Redux updates together.
+   */
   constructor() {
     this.unsubscribe = null
     this.app = null
     this.gameController = null
   }
 
+  /**
+   * Initializes renderer, starts controller, and subscribes to store updates.
+   */
   async start() {
     console.log("Game Started")
 
@@ -72,14 +77,21 @@ export default class Game {
   }
 
   update(state) {
+    // Hook for reacting to store updates in one place.
     console.log("Current Turn:", state.game.currentTurn)
   }
 
+  /**
+   * Called by UI interactions to emit a play-card action to backend.
+   */
   onCardClicked(card) {
     // Forward played card to backend.
     playCard(card)
   }
 
+  /**
+   * Tears down subscriptions and Pixi renderer resources.
+   */
   destroy() {
     // Cleanup Redux subscription and Pixi resources.
     if (this.unsubscribe) {

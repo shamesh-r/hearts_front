@@ -21,6 +21,7 @@ const playerSlice = createSlice({
     },
 
     setHand: (state, action) => {
+      // Replaces local hand with latest authoritative cards.
       state.hand = action.payload
     },
 
@@ -32,9 +33,11 @@ const playerSlice = createSlice({
     },
 
     setConnectionStatus: (state, action) => {
+      // Updates connection badge/status indicator.
       state.connected = action.payload
     },
 
+    // Resets local player slice to defaults.
     resetPlayer: () => initialState,
   },
 })
