@@ -1,3 +1,4 @@
+// Entry point: bootstraps socket listeners and starts the Pixi game app.
 import { Application } from "pixi.js"
 import { GameController } from "./card-game/GameController"
 import { connectToServer } from "./socket/socketActions"
@@ -13,20 +14,24 @@ class Game {
   }
 
   async start() {
+    // Pixi v8 initialization is async.
     this.app = new Application()
     await this.app.init({
       resizeTo: window,
       backgroundColor: 0x0b6623,
     })
 
+    // Attach renderer canvas to the page.
     document.body.appendChild(this.app.canvas)
 
+    // Hand over control to the Hearts game controller.
     this.controller = new GameController(this.app)
     this.controller.init()
   }
 }
 
 const bootstrap = async () => {
+  // Register socket listeners before connecting to avoid missing early events.
   registerSocketEvents()
   connectToServer()
 
@@ -40,6 +45,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 if (import.meta.hot) {
   import.meta.hot.dispose(() => {
+    // Prevent duplicate listeners during Vite hot reload.
     unregisterSocketEvents()
   })
 }

@@ -1,3 +1,4 @@
+// Redux slice for transient UI-only state.
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {

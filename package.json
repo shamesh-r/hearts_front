@@ -16,6 +16,7 @@
     "@pixi/sound": "^6.0.1",
     "@pixi/spritesheet": "^7.4.3",
     "@reduxjs/toolkit": "^2.11.2",
+    "mitt": "^3.0.1",
     "pixi.js": "^8.16.0",
     "react-redux": "^9.2.0",
     "react-scripts": "^0.0.0",

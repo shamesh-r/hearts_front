@@ -1,3 +1,4 @@
+// Utility for creating, shuffling, and dealing a standard 52-card deck.
 export class Deck {
   constructor() {
     this.suits = ["♠", "♥", "♦", "♣"];
@@ -7,6 +8,7 @@ export class Deck {
   }
 
   createDeck() {
+    // Build all suit/rank combinations.
     this.cards = [];
     for (let suit of this.suits) {
       for (let rank of this.ranks) {
@@ -16,6 +18,7 @@ export class Deck {
   }
 
   shuffle() {
+    // Fisher-Yates shuffle.
     for (let i = this.cards.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
@@ -23,6 +26,7 @@ export class Deck {
   }
 
   deal() {
+    // Remove card from top/end of deck.
     return this.cards.pop();
   }
 }

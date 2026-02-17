@@ -1,3 +1,4 @@
+// Redux slice for the local player's identity/hand/connection status.
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
@@ -13,6 +14,7 @@ const playerSlice = createSlice({
   initialState,
   reducers: {
     setPlayer: (state, action) => {
+      // Save backend-assigned player identity info.
       state.id = action.payload.id
       state.name = action.payload.name
       state.seatIndex = action.payload.seatIndex
@@ -23,6 +25,7 @@ const playerSlice = createSlice({
     },
 
     removeCardFromHand: (state, action) => {
+      // Optimistic removal after card play.
       state.hand = state.hand.filter(
         (card) => card.id !== action.payload.id
       )

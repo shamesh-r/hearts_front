@@ -33,6 +33,7 @@
 //   }
 // }
 
+// Alternative game bootstrap class that combines Pixi rendering with Redux subscription.
 import { store } from "./store/store"
 import { playCard } from "./socket/socketActions"
 import { Application } from "pixi.js"
@@ -49,21 +50,21 @@ export default class Game {
   async start() {
     console.log("Game Started")
 
-    // ✅ Pixi v8 async init
+    // Initialize Pixi renderer.
     this.app = new Application()
     await this.app.init({
       resizeTo: window,
       backgroundColor: 0x0b6623
     })
 
-    // ✅ Add canvas correctly
+    // Mount Pixi canvas.
     document.body.appendChild(this.app.canvas)
 
-    // ✅ Start your Pixi card game UI
+    // Start game scene/controller.
     this.gameController = new GameController(this.app)
     this.gameController.init()
 
-    // ✅ Keep Redux logic
+    // Track Redux updates for reactive UI/game-state hooks.
     this.unsubscribe = store.subscribe(() => {
       const state = store.getState()
       this.update(state)
@@ -75,10 +76,12 @@ export default class Game {
   }
 
   onCardClicked(card) {
+    // Forward played card to backend.
     playCard(card)
   }
 
   destroy() {
+    // Cleanup Redux subscription and Pixi resources.
     if (this.unsubscribe) {
       this.unsubscribe()
     }

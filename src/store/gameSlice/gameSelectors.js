@@ -1,3 +1,4 @@
+// Read-only helpers for selecting game slice fields.
 export const selectGame = (state) => state.game
 export const selectPlayers = (state) => state.game.players
 export const selectCurrentTurn = (state) => state.game.currentTurn

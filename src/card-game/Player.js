@@ -1,3 +1,4 @@
+// Lightweight player seat model for local rendering (position + hand).
 export class Player {
   constructor(id, x, y) {
     this.id = id;
@@ -7,10 +8,12 @@ export class Player {
   }
 
   receiveCard(card) {
+    // Append dealt/drawn card.
     this.hand.push(card);
   }
 
   reset() {
+    // Clear hand between rounds or when re-syncing from server state.
     this.hand = [];
   }
 }

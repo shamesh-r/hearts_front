@@ -1,3 +1,4 @@
+// Pixi display object for a playing card (front and back rendering).
 import { Container, Graphics, Text } from "pixi.js";
 import { SUITS, SUIT_COLORS, RANK_NAMES, CARD_WIDTH, CARD_HEIGHT, CARD_CORNER_RADIUS } from "./CardAssets";
 
@@ -19,7 +20,7 @@ export class CardSprite extends Container {
   }
 
   drawCard() {
-    // Clear previous graphics
+    // Redraw from scratch whenever card state (face-up/face-down) changes.
     this.bg.clear();
     this.contentContainer.removeChildren();
     
@@ -122,11 +123,13 @@ export class CardSprite extends Container {
   }
 
   flip() {
+    // Toggle card face visibility.
     this.isFlipped = !this.isFlipped;
     this.drawCard();
   }
 
   reveal() {
+    // Convenience helper for one-way reveal.
     if (this.isFlipped) {
       this.flip();
     }

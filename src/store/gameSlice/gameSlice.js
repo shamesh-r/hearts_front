@@ -1,3 +1,4 @@
+// Redux slice for shared Hearts game state.
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
@@ -15,6 +16,7 @@ const gameSlice = createSlice({
   initialState,
   reducers: {
     setGameState: (state, action) => {
+      // Replace whole game snapshot from server.
       return action.payload
     },
 

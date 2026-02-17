@@ -1,3 +1,4 @@
+// Shared card constants used by the card renderer and layout.
 // Card suit symbols and colors
 export const SUITS = {
   HEARTS: '♥',
